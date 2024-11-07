@@ -1,11 +1,13 @@
 import { MobileNavbarContent } from "@/static/MobileNavbarContent";
+import Link from "next/link";
 
 export default function MobileNavbar() {
   return (
-    <div className="absolute bottom-0 left-0 lg:hidden">
-      <div className="flex items-center justify-between w-screen py-2">
+    <div className="fixed bottom-0 left-0 lg:hidden bg-white z-50">
+      <div className="flex items-center justify-between w-screen py-3">
         {MobileNavbarContent.map((navbar, index) => (
-          <button
+          <Link
+            href={navbar.link}
             key={index}
             className="flex flex-col items-center justify-center w-full"
           >
@@ -21,7 +23,7 @@ export default function MobileNavbar() {
             >
               {navbar.label}
             </span>
-          </button>
+          </Link>
         ))}
       </div>
     </div>
