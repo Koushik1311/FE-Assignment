@@ -4,20 +4,27 @@ import { useAppSelector } from "@/redux/store";
 import MovieCard from "./MovieCard";
 import RecommendedMovies from "./RecommendedMovies";
 import PremireOfTheWeek from "./PremireOfTheWeek";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+
+// Separate component for handling searchParams
+function CategoryContent() {
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category");
+
+  return category === "Stream" ? <PremireOfTheWeek /> : <RecommendedMovies />;
+}
 
 export default function MovieStreamGallery() {
   // Get movie details from redux store
   const results = useAppSelector((state) => state.movieReducer.movieDetails);
 
-  const searchParams = useSearchParams();
-  const category = searchParams.get("category");
-
   if (!results || results.length === 0) {
     return (
       <div className="container mt-6">
-        {/* Initial Movie Card */}
-        {category === "Stream" ? <PremireOfTheWeek /> : <RecommendedMovies />}
+        <Suspense fallback={<div>Loading...</div>}>
+          <CategoryContent />
+        </Suspense>
       </div>
     );
   }
